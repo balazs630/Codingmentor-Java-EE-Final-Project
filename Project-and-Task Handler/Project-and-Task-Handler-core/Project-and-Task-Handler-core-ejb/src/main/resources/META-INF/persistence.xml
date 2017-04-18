@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="ProjectHandlerPU">
+    <jta-data-source>java:/jdbc/ProjectHandlerDS</jta-data-source>
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>com.schonherz.project.entity.Forum</class>
+    <class>com.schonherz.project.entity.Client</class>
+    <class>com.schonherz.project.entity.Comment</class>
+    <class>com.schonherz.project.entity.Post</class>
+    <class>com.schonherz.project.entity.Project</class>
+    <class>com.schonherz.project.entity.Task</class>
+    <class>com.schonherz.project.entity.User</class>
+    <class>com.schonherz.project.entity.Notification</class>
+    <class>com.schonherz.project.entity.Setting</class>
+    <class>com.schonherz.project.entity.Record</class>
+    <class>com.schonherz.project.entity.Role</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>

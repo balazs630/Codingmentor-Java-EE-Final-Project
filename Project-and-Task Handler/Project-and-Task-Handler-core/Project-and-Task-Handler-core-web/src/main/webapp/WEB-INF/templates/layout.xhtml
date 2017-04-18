@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Project and Task Handler</title>
+        </f:facet>
+        <h:outputStylesheet library="css" name="layout.css" />
+    </h:head>
+    <h:body>
+        <p:growl id="growl" showDetail="false" sticky="false" autoUpdate="true" life="4000"/>
+        <p:layout fullPage="true" styleClass="main_layout">
+            <p:layoutUnit position="north" size="105">
+                <p:layout>
+                    <p:layoutUnit position="west" size="450" styleClass="north-west_layout">
+                        <h:form>
+                            <h:commandLink action="#{IndexView.loadHomepage}" >
+                                <p:graphicImage value="/images/home_logo.png" styleClass="home_logoPicture"/>
+                            </h:commandLink>
+                            <ui:insert name="site_title">Put default content here, if any</ui:insert>
+                        </h:form>
+                    </p:layoutUnit>
+                    <p:layoutUnit position="center" styleClass="north-center_layout">
+                        <h:form styleClass="north-center_layout-menu">
+                            <p:graphicImage
+                                value="#{facesContext.externalContext.requestScheme}://#{facesContext.externalContext.requestServerName}:#{facesContext.externalContext.requestServerPort}/uploads/#{profileSettings.user.link}"
+                                style="width:50px; height:50px; vertical-align: middle;"
+                                rendered="#{not empty profileSettings.user.link}"/>
+
+                            <p:graphicImage value="/images/profile_default.png"
+                                            style="width:50px; height:50px; vertical-align: middle;"
+                                            rendered="#{empty profileSettings.user.link}"/>
+                            <h:outputText value=" Hi, #{profileSettings.user.username}" styleClass="login_name" />       
+                            <p:button value="(#{NotificationView.getCountOfUnread()}) Notifications" outcome="/protected/user/personalmenu/notifications.xhtml" style="margin-left: 10px;" styleClass="green_button"/>
+                            <p:button value="Profile Settings" outcome="/protected/user/personalmenu/profilesettings.xhtml" style="margin-left: 10px;" styleClass="green_button"/>
+                            <p:commandButton action="#{login.logout}" value="Logout" style="margin-left: 20px; margin-right: 20px;" styleClass="grey_button"/>
+                        </h:form>
+                    </p:layoutUnit>
+                </p:layout>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="250" styleClass="west_layout">
+                <div class="menuBackground">
+                    <p:menu toggleable="false" styleClass="west_layout-menu">
+                        <p:menuitem value="Home" outcome="/protected/user/index.xhtml" styleClass="west_layout-menuitem" />
+                        <p:submenu label="Queries" >
+                            <p:menuitem value="Forum posts" outcome="/protected/user/queries/forumposts.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/queries/forumposts.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Top priority tasks" outcome="/protected/user/queries/toppriority.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/queries/toppriority.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Blocked tasks" outcome="/protected/user/queries/blockedtasks.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/queries/blockedtasks.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Open tasks" outcome="/protected/user/queries/opentasks.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/queries/opentasks.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Deadline lookup" outcome="/protected/user/queries/deadlinelookup.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/queries/deadlinelookup.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                        </p:submenu>
+                        <p:submenu label="Administration" >
+                            <p:menuitem value="Project" outcome="/protected/user/administration/project.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/administration/project.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Task" outcome="/protected/user/administration/task.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/administration/task.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="User" outcome="/protected/user/administration/user.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/administration/user.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                            <p:menuitem value="Client" outcome="/protected/user/administration/client.xhtml"
+                                        styleClass="#{view.viewId == '/protected/user/administration/client.xhtml' ? 'ui-state-active' : ''}" style="color: white; margin-left: 20px; width: 184px !important;" />
+                        </p:submenu>
+                    </p:menu>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" styleClass="center_layout">
+                <ui:insert name="main_content">Put default content here, if any</ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

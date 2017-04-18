@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Forum posts
+    </ui:define>
+    <ui:define name="main_content">
+        <h:form>
+            <h:outputLabel for="searchbox" value="Search forum posts written by: " />
+            <p:inputText id="searchbox" required="true" requiredMessage="Username is required" value="#{ForumPostView.username}"/>
+            <p:watermark id="wm_username" for="searchbox" value="username" /> 
+            <p:commandButton value="Search" action="#{ForumPostView.search}" style="margin-left: 10px;" styleClass="blue_button"/>
+        </h:form>
+
+        <p:dataTable id="ForumQuery" var="post" value="#{ForumPostView.posts}" style="margin-top:20px">
+            <p:column headerText="Project name">
+                <h:outputText value="#{post.forum.project.name}"/>
+            </p:column>
+
+            <p:column headerText="Forum topic">
+                <h:outputText value="#{post.forum.topic}" />
+            </p:column>
+
+            <p:column headerText="Content">
+                <h:outputText value="#{post.content}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>    
+</ui:composition>

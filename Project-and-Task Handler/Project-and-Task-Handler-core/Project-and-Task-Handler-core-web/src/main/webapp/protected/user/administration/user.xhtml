@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        User administration
+    </ui:define> 
+    <ui:define name="main_content">
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="users" var="user" value="#{UserView.users}" editable="true" style="margin-bottom:20px">
+
+                <p:ajax event="rowEdit" listener="#{UserView.onRowEdit}" update=":form:users" />
+                <p:ajax event="rowEditCancel" listener="#{UserView.onRowCancel}" update=":form:users" />
+
+                <p:column headerText="First name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.firstName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.firstName}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Last name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.lastName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.lastName}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Role">
+                        <h:outputText value="#{user.roles[0].name}" />
+                </p:column>
+                <p:column headerText="Username">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.username}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Position">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{user.position}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{user.position}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Birth of Date">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{user.birthDate}">
+                                <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                            </h:outputText></f:facet>
+                        <f:facet name="input">
+                            <p:calendar pattern="yyyy-MM-dd" value="#{user.birthDate}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Edit" style="width:32px" rendered="#{request.isUserInRole('admin')}">
+                    <p:rowEditor />
+                </p:column>
+
+                <p:column headerText="Delete" style="width:55px" rendered="#{request.isUserInRole('admin')}">
+                    <p:commandButton id="delete" actionListener="#{UserView.onRowDelete}" icon="ui-icon-trash">
+                        <p:confirm header="Confirmation" message="Are you sure to delete?" icon="ui-icon-alert" /> 
+                        <f:param name="user_id" value="#{user.id}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>    
+</ui:composition>

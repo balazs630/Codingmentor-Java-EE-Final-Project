@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Project administration
+    </ui:define>
+    <ui:define name="main_content">
+        <div style="margin-bottom: 15px">
+            <p:button outcome="/protected/admin/administration/addnewproject.xhtml" value="+ Add new project" styleClass="blue_button"/>
+        </div>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="projects" var="project" value="#{ProjectView.projects}" editable="true"
+                         style="margin-bottom:20px">
+
+                <p:ajax event="rowEdit" listener="#{ProjectView.onRowEdit}" update=":form:projects"/>
+                <p:ajax event="rowEditCancel" listener="#{ProjectView.onRowCancel}" update=":form:projects"/>
+
+                <p:column headerText="Project name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{project.name}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{project.name}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Client name">
+                    <h:outputText value="#{project.client.name}"/>
+                </p:column>
+                <p:column headerText="Kickoff">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{project.kickoff}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+                        </h:outputText>
+                        </f:facet>
+                        <f:facet name="input"> <p:calendar pattern="yyyy-MM-dd HH:mm:ss" value="#{project.kickoff}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Deadline">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{project.deadline}">
+                                <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </h:outputText></f:facet>
+                        <f:facet name="input">
+                            <p:calendar pattern="yyyy-MM-dd HH:mm:ss" value="#{project.deadline}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Leader username">
+                    <h:outputText value="#{project.user.username}"/>
+                </p:column>
+                <p:column headerText="State">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{project.state}"/></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{project.state}" style="width: 100%">
+                                <f:selectItems value="#{ProjectView.projectState}" var="state" itemLabel="#{state}" itemValue="#{state}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Description">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{project.description}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{project.description}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Edit" style="width:32px" rendered="#{request.isUserInRole('admin')}">
+                    <p:rowEditor/>
+                </p:column>
+                <p:column headerText="Delete" style="width:55px" rendered="#{request.isUserInRole('admin')}">
+                    <p:commandButton id="delete" actionListener="#{ProjectView.onRowDelete}" icon="ui-icon-trash"
+                                     update="@form" ajax="true">
+                        <p:confirm header="Confirmation" message="Are you sure to delete?" icon="ui-icon-alert"/>
+                        <f:param name="project_id" value="#{project.id}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

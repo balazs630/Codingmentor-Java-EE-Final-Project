@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>project-and-task-handler</groupId>
+    <artifactId>Project-and-Task-Handler-core</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Project-and-Task-Handler-core</name>
+    <modules>
+        <module>Project-and-Task-Handler-core-ear</module>
+        <module>Project-and-Task-Handler-core-web</module>
+        <module>Project-and-Task-Handler-core-ejb</module>
+        <module>../jBCrypt</module>
+    </modules>
+</project>

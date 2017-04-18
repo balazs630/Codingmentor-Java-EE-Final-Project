@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Home of project manager
+    </ui:define> 
+    <ui:define name="main_content">
+        <h:form>
+            <p:dataTable  var="project" value="#{IndexView.projects}" 
+                          selection="#{IndexView.selectedProjects}" rowKey="#{project.id}"
+                          paginator="true" rowsPerPageTemplate="10,20,50" rows="10"
+                          paginatorTemplate="{FirstPageLink} {PreviousPageLink} 
+                          {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                          widgetVar="projectsTable" emptyMessage="No projects found with given criteria" 
+                          filteredValue="#{IndexView.filteredProjects}" style="margin-bottom:20px">
+                <f:facet name="header">
+                    <div align="right">    
+                        <p:outputPanel style="border: none;">
+                            <h:outputText value="Search all fields: " />
+                            <p:inputText id="globalFilter" onkeyup="PF('projectsTable').filter()" 
+                                         style="width:500px;"  placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </div>
+                </f:facet>
+
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column headerText="Id" style="width: 50px" filterBy="#{project.id}" filterStyle="display:none">
+                    <h:outputText value="#{project.id}" />
+                </p:column>
+
+                <p:column headerText="Project name" filterBy="#{project.name}" filterStyle="display:none">
+                    <h:outputText value="#{project.name}" />
+                </p:column>
+
+                <p:column headerText="Client name" filterBy="#{project.client.name}" filterStyle="display:none">
+                    <h:outputText value="#{project.client.name}" />
+                </p:column>
+
+                <p:column filterMatchMode="in" filterBy="#{project.state}" filterStyle="display:none">
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu label="State" onchange="PF('projectsTable').filter()" 
+                                              panelStyle="width:170px" scrollHeight="90">
+                            <f:selectItems value="#{IndexView.states}" />
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                    <h:outputText value="#{project.state}" />
+                </p:column>
+
+                <p:column headerText="Deadline" filterBy="#{project.deadline}" filterStyle="display:none">
+                    <h:outputText value="#{project.deadline}" />
+                </p:column>
+
+                <p:column headerText="Forum" style="width:60px" >
+                    <p:commandButton id="submit_forum" icon="ui-icon-arrowreturnthick-1-w" action="#{IndexView.showForums}">
+                        <f:param name="project_id" value="#{project.id}" />
+                    </p:commandButton>
+                </p:column>
+
+                <p:column headerText="View" style="width:50px">
+                    <p:commandButton id="submit_view" icon="ui-icon-search" action="#{IndexView.viewProject}">
+                        <f:param name="project_id" value="#{project.id}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton id="compare_projects" value="Compare selected" action="#{IndexView.compareProjects}" styleClass="blue_button" style="margin-bottom: 20px;"/>           
+        </h:form>
+    </ui:define>    
+</ui:composition>

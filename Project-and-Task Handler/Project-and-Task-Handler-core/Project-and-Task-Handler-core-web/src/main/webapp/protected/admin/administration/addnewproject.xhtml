@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Project administration
+    </ui:define> 
+    <ui:define name="main_content">
+        <h:form>
+            <p:panel id="panel" header="Add new project" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Project name: *"/>
+                    <p:inputText id="projectname" value="#{addnewproject.project.name}" required="true" requiredMessage="Project name is required" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel value="Client name: *"/>
+                    <p:inputText id="clientname" value="#{addnewproject.clientName}" required="true" requiredMessage="Client name is required" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel value="Leader username: *"/>
+                    <p:inputText id="leaderusrname" value="#{addnewproject.leaderName}" required="true" requiredMessage="Leader username is required" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel value="Description:"/>
+                    <p:inputTextarea id="descr" value="#{addnewproject.project.description}" rows="5" cols="30" autoResize="false" />
+
+                    <p:outputLabel value="Deadline: *"/>
+                    <p:calendar id="deadline" value="#{addnewproject.project.deadline}" yearRange="c-0:c+20" pattern="yyyy-MM-dd" mask="true" required="true" requiredMessage="Deadline is required"/>  
+                </h:panelGrid>
+            </p:panel>
+            <p:commandButton value="Create" action="#{addnewproject.createProject}" styleClass="blue_button"/>
+            <p:button value="Back" outcome="/protected/user/administration/project.xhtml" styleClass="grey_button" style="margin-left: 20px;"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

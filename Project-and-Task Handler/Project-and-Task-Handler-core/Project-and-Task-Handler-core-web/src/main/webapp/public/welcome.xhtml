@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    template="/WEB-INF/templates/welcome_layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="action_content">
+        <h:form>
+            <h:panelGrid  columns="1" style="padding-top: 10px; padding-bottom: 10px;">
+                <p:outputLabel value="Project Management System" style="font-size: 30px; font-variant: small-caps; color: white" />
+                <p:inputText id="it_username" required="true" requiredMessage="Username is required" value="#{login.username}" style="margin-top: 40px"/>
+                <p:watermark id="wm_username" for="it_username" value="username" />
+                <p:password id="it_password" required="true" requiredMessage="Password is required" value="#{login.password}" style="margin-top: 10px"/>
+                <p:watermark id="wm_password" for="it_password" value="password" />
+                <p:commandButton value="Login"  action="#{login.validateUsernamePassword}" styleClass="green_button" style="margin-bottom: 80%;"/>
+                <p:outputLabel value="Don't have an account, yet?" style="color: white"/>
+                <p:button value="Registrate" outcome="registration.xhtml" styleClass="blue_button"/> 
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

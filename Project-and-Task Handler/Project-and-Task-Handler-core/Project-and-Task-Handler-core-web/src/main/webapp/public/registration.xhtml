@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    template="/WEB-INF/templates/welcome_layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="action_content">
+        <h:form enctype="multipart/form-data">
+            <h:panelGrid  columns="1" style="padding-top: 10px; padding-bottom: 10px;">
+                <p:outputLabel value="Registration" style="font-size: 30px; font-variant: small-caps; color: #FFFFFF" />
+
+                <h:panelGrid  columns="1" style="margin-top:20px">
+                    <p:inputText id="it_first_name" value="#{registration.user.firstName}" required="true" requiredMessage="First name is required" style="margin-bottom: 10px"/>
+                    <p:watermark id="wm_first_name" for="it_first_name" value="First name *" /> 
+                    <p:inputText id="it_last_name"  value="#{registration.user.lastName}" required="true" requiredMessage="Last name is required" style="margin-bottom: 10px"/>
+                    <p:watermark id="wm_last_name" for="it_last_name" value="Last name *" />
+                    <p:autoComplete id="ac_gender" dropdown="true" value="#{registration.user.gender}"  size="16" completeMethod="#{registration.genderAttrs}" style="margin-bottom: 10px"/>
+                    <p:watermark id="wm_gender" for="ac_gender" value="Gender" />
+                </h:panelGrid> 
+
+                <h:panelGrid  columns="1" style="margin-bottom: 10px;">
+                    <p:calendar id="mask" value="#{registration.user.birthDate}" yearRange="c-70:c+0" navigator="true" pattern="yyyy-MM-dd" mask="true" required="true" requiredMessage="Date of Birth is required"/>
+                    <p:watermark id="wm_out" for="mask" value="Date of Birth *" />
+                </h:panelGrid>
+
+                <p:fileUpload
+                    value="#{registration.profilePicture}"
+                    mode="simple"
+                    skinSimple="true"/>
+
+                <h:panelGrid  columns="1" style="margin: 0 auto; margin-top:50px">
+                    <p:inputText id="it_username"  value="#{registration.user.username}" required="true" requiredMessage="Username is required" style="margin-bottom: 10px"/>
+                    <p:watermark id="wm_username" for="it_username" value="Username *" />
+
+                    <p:password id="it_password" value="#{registration.user.password}" match="it_re_password" feedback="true" required="true" requiredMessage="Password is required" style="margin-bottom: 10px"/>
+                    <p:watermark id="wm_password" for="it_password" value="Password *" />
+
+                    <p:password id="it_re_password" required="true" requiredMessage="Password confirmation is required" style="margin-bottom: 20px"/>
+                    <p:watermark id="wm_re_password" for="it_re_password" value="Re-type password *" />
+                </h:panelGrid> 
+
+                <h:panelGrid  columns="2">    
+                    <p:commandButton value="Registrate" ajax="false" action="#{registration.createUser}" styleClass="green_button"/>
+                    <p:button value="Back" outcome="welcome.xhtml" styleClass="grey_button"/>
+                </h:panelGrid>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

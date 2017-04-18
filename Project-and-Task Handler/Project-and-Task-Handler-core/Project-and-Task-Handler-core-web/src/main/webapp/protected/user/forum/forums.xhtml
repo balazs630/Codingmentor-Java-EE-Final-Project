@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Forums
+    </ui:define> 
+    <ui:define name="main_content">
+        <h:form>   
+            <p:growl id="msgs" showDetail="true"/>
+            <div style="margin-bottom: 15px;">
+                <p:outputLabel id="topiclabel" value="Name: " style="margin-left: 10px"/>
+                <p:inputText id="topicname" value="#{AddNewForumTopic.forum.topic}" required="true" requiredMessage="Forum topic name is required"/>
+                <p:watermark id="wm_topicname" for="topicname" value="Add new forum topic" /> 
+                <p:commandButton value="+ Add" update=":form:forums" action="#{AddNewForumTopic.createNewTopic(IndexView.selectedProjectId)}" style="margin-left: 10px;" styleClass="blue_button"/>
+            </div>
+        </h:form>
+        <h:form id="form">
+            <p:dataTable id="forums" var="forum" value="#{IndexView.forums}" editable="true" style="margin-bottom:20px">
+                <p:column headerText="Topic name">
+                    <h:outputText value="#{forum.topic}"/> 
+                </p:column>
+
+                <p:column headerText="Owner">
+                    <h:outputText value="#{forum.user.username}"/> 
+                </p:column>
+
+                <p:column headerText="Number of posts">
+                    <h:outputFormat value="#{forum.postCount = ForumView.numberOfPostPerForum(forum.id)}" />                    
+                </p:column>
+
+                <p:column headerText="View" style="width:50px">
+                    <p:commandButton id="submit_view" icon="ui-icon-search" action="#{ForumView.showPosts}">
+                        <f:param name="forum_id" value="#{forum.id}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:button value="Back" outcome="/protected/user/index.xhtml" styleClass="grey_button"/>
+    </ui:define>    
+</ui:composition>

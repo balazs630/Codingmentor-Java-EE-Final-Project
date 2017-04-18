@@ -1,0 +1,122 @@
+/* 
+    Created on : Sep 20, 2016, 5:04:29 AM
+    Author     : balazs630
+*/
+
+body {
+    background-color: transparent;
+    background-image: url(../images/background_solid.jpg);
+}
+
+.north-west_layout {
+    font-size: 24pt !important;
+    border: none;
+}
+
+.north-center_layout {
+    text-align: right;
+    border: none;
+}
+
+.north-center_layout-menu {
+    background-color: rgba(40, 96, 125, 0.8);
+    border-radius: 10px; 
+    box-shadow: 5px 5px 20px #888888;
+}
+
+.north-center_layout-menu .green_button {
+    margin-top: 10px;
+    border-width:1px;
+    border-color: black;
+    border-style: solid; 
+    text-align: center;
+    background: #4CAF50;
+    color: white;  
+}
+
+.north-center_layout-menu .grey_button {
+    margin-top: 10px;
+    border-width:1px;
+    border-color: #000000;
+    border-style: solid;
+    text-align: center;
+    background: gainsboro;
+    color: rgb(40, 96, 125);
+}
+
+.west_layout {
+    background-color: transparent;
+    border: none;
+}
+
+.west_layout .ui-layout-unit-content{
+    background: transparent;
+    background-image: url(../images/background_solid.jpg);
+}
+
+.west_layout-menu {
+    background: rgba(40, 96, 125, 0.8);
+    box-shadow: 5px 5px 20px #888888;
+    border-radius: 10px;
+    height: auto;
+}
+
+.west_layout-menuitem {
+    color: white !important; 
+    margin-left: 20px; 
+    width: 184px !important;
+}
+
+.menuBackground {
+    background-color: white;
+}
+
+.center_layout {
+    background-color: transparent;
+    border: none;
+}
+
+.center_layout .ui-layout-unit-content{
+    background: transparent;
+    background-image: url(../images/background_solid.jpg);
+}
+
+.center_layout .blue_button {
+    margin-top: 10px; 
+    border-width:1px; 
+    border-color: black;
+    border-style: solid;
+    text-align: center; 
+    background: #3F51B5; 
+    color: white; 
+}
+
+.center_layout .grey_button {
+    margin-top: 10px;
+    border-width:1px;
+    border-color: #000000;
+    border-style: solid;
+    text-align: center;
+    background: gainsboro;
+    color: rgb(40, 96, 125);
+}
+
+.login_name {
+    color: white;
+}
+
+.home_profilePicture {
+    width:50px; 
+    height:50px; 
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.home_logoPicture {
+    width: 63px;
+    height: 63px;
+}
+
+.inputTextWidth {
+    width: 300px;
+}

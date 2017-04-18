@@ -1,0 +1,169 @@
+connect
+
+echo CONFIG BEGIN
+
+# Undeploy old project
+
+if (outcome == success) of /deployment=Project-and-Task-Handler-core-ear-1.0-SNAPSHOT.ear/:read-resource
+	/deployment=Project-and-Task-Handler-core-ear-1.0-SNAPSHOT.ear/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Remove security domain
+
+if (outcome == success) of /subsystem=security/security-domain=ProjectHandlerSecurityDomain:read-resource
+    /subsystem=security/security-domain=ProjectHandlerSecurityDomain:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Remove old driver
+
+if (outcome == success) of /deployment=mysql-connector-java-5.1.9.jar/:read-resource
+	/deployment=mysql-connector-java-5.1.9.jar/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Deploy driver
+
+deploy --force mysql-connector-java-5.1.9.jar
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Remove old uploads handler, path
+
+if (outcome == success) of /subsystem=undertow/server=default-server/host=default-host/location=\/uploads/:read-resource
+	/subsystem=undertow/server=default-server/host=default-host/location=\/uploads/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+if (outcome == success) of /subsystem=undertow/configuration=handler/file=uploads/:read-resource
+	/subsystem=undertow/configuration=handler/file=uploads/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Add uploads handler
+
+/subsystem=undertow/configuration=handler/file=uploads/:add(path=${jboss.home.dir}/uploads)
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Add uploads path
+
+/subsystem=undertow/server=default-server/host=default-host/location=\/uploads/:add(handler=uploads)
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Remove default datasource
+
+if (outcome == success) of /subsystem=datasources/data-source=ExampleDS/:read-resource
+    /subsystem=datasources/data-source=ExampleDS/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Remove old datasource
+
+if (outcome == success) of /subsystem=datasources/data-source=ProjectHandlerDS/:read-resource
+    /subsystem=datasources/data-source=ProjectHandlerDS/:remove
+end-if
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Add datasource
+
+data-source add \
+    --name=ProjectHandlerDS \
+    --driver-name=mysql-connector-java-5.1.9.jar \
+    --connection-url=jdbc:mysql://localhost:3306/ProjectHandlerDB \
+    --jndi-name=java:/jdbc/ProjectHandlerDS \
+    --user-name=ProjectHandlerUser \
+    --password=ProjectHandlerPassword \
+    --use-ccm=true \
+    --jta=true \
+    --driver-class=com.mysql.jdbc.Driver \
+    --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker \
+    --background-validation=true \
+    --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter \
+    --enabled=true
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Set default datasource
+
+/subsystem=jpa/:write-attribute(name=default-datasource,value=java:/jdbc/ProjectHandlerDS)
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+/subsystem=ee/service=default-bindings/:write-attribute(name=datasource,value=java:/jdbc/ProjectHandlerDS)
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Add security domain
+
+/subsystem=security/security-domain=ProjectHandlerSecurityDomain:add
+
+/subsystem=security/security-domain=ProjectHandlerSecurityDomain/authentication=classic:add( \
+    login-modules=[ \
+        { \
+            "code" => "com.schonherz.project.security.LoginModule", \
+            "flag" => "required", \
+            "module-options" => [ \
+                ("unauthenticatedIdentity" => "guest"), \
+                ("dsJndiName" => "java:/jdbc/ProjectHandlerDS"), \
+                ("principalsQuery" => "SELECT ProjectHandlerDB.USER.PASSWORD AS 'Password' FROM ProjectHandlerDB.USER WHERE ProjectHandlerDB.USER.USER_NAME = ?"), \
+                ("rolesQuery" => "SELECT r.ROLE_NAME, 'Roles' FROM ProjectHandlerDB.ROLES rs INNER JOIN ProjectHandlerDB.USER u ON rs.USER_ID = u.id INNER JOIN ProjectHandlerDB.ROLE r ON rs.ROLE_ID = r.id WHERE u.USER_NAME = ?"), \
+                ("hashStorePassword" => "false"), \
+                ("hashUserPassword" => "false") \
+            ] \
+        } \
+    ] \
+)
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Deploy project
+
+deploy --force "../Project-and-Task Handler/Project-and-Task-Handler-core/Project-and-Task-Handler-core-ear/target/Project-and-Task-Handler-core-ear-1.0-SNAPSHOT.ear"
+
+if (result == reload-required) of read-attribute server-state
+    reload
+end-if
+
+# Server succesfully configured
+
+echo CONFIG END
+
+quit

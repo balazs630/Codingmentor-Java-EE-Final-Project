@@ -1,0 +1,76 @@
+/* 
+    Created on : 2016.09.07., 17:04:49
+    Author     : Szilard
+*/
+
+body {
+    background-image: url(../images/group_project_background.jpg);
+    background-position: center;
+    background-size: 100%; 
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    max-width: 100%;
+    overflow-x: hidden;
+    max-height: 100%;
+    background-color: rgb(40, 96, 125);
+}
+
+form {
+    background: rgba(40, 96, 125, 0.9);
+    width: 320px;
+    height: 100%;
+    margin: 0 auto; 
+    padding: 15px;
+    box-shadow: 5px 5px 20px #888888;
+    border-radius: 10px;
+}
+
+.hitcounter_text {
+    color: white; 
+    padding: 5px; 
+    font-family: sans-serif;
+    background-color: rgba(40, 96, 125, 0.9);
+    border-radius: 10px; 
+    box-shadow: 5px 5px 20px #888888;
+}
+
+.hitcounter_number {
+    color: black;
+    padding: 5px;
+    font-family: sans-serif;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 5px 5px 20px #888888;
+    margin-left: 5px;
+}
+
+.blue_button {
+    margin-top: 10px; 
+    border-width:1px; 
+    border-color: black;
+    border-style: solid;
+    text-align: center; 
+    background: #3F51B5; 
+    color: white; 
+}
+
+.green_button {
+    margin-top: 10px;
+    border-width:1px;
+    border-color: black;
+    border-style: solid; 
+    text-align: center;
+    background: #4CAF50;
+    color: white;  
+}
+
+.grey_button {
+    margin-top: 10px;
+    border-width:1px;
+    border-color: #000000;
+    border-style: solid;
+    text-align: center;
+    background: gainsboro;
+    color: rgb(40, 96, 125);
+}

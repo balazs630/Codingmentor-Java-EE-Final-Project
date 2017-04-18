@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="site_title">
+        Task administration
+    </ui:define>
+    <ui:define name="main_content">
+        <h:form>
+            <p:panel id="panel" header="Add new task" style="margin-bottom:10px;">
+                <p:messages id="messages"/>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Task name: *"/>
+                    <p:inputText id="taskname" value="#{addnewtask.task.name}" required="true" requiredMessage="Task name is required" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel for="description" value="Description:"/>
+                    <p:inputTextarea id="description" value="#{addnewtask.task.description}" rows="5" cols="30" autoResize="false" required="true" requiredMessage="Description is required" />
+
+                    <p:outputLabel for="parenttask" value="Parent task name:"/>
+                    <p:inputText id="parenttask" value="#{addnewtask.parentTaskName}" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel for="projectname" value="Project name:"/>
+                    <p:inputText id="projectname" value="#{addnewtask.projectName}" required="true" requiredMessage="Project name is required" styleClass="inputTextWidth"/>
+
+                    <p:outputLabel value="Priority:"/>
+                    <p:autoComplete id="ac_priority" dropdown="true" value="#{addnewtask.task.priority}" size="16"
+                                    completeMethod="#{addnewtask.priorityAttrs}"/>
+
+                    <p:outputLabel for="leaderusrname" value="Leader username:"/>
+                    <p:inputText id="leaderusrname" value="#{addnewtask.leaderUsrName}" required="true" requiredMessage="Leader username is required" styleClass="inputTextWidth"/>
+
+                    <h:outputText value="Deadline: *"/>
+                    <p:calendar id="deadline" value="#{addnewtask.task.deadline}" required="true" requiredMessage="Deadline is required" 
+                                yearRange="c-0:c+20" mask="true" navigator="true" pattern="yyyy-MM-dd HH:mm" />
+
+                    <p:outputLabel value="Type:" for="ac_type"/>
+                    <p:autoComplete id="ac_type" dropdown="true" value="#{addnewtask.task.type}" size="16"
+                                    completeMethod="#{addnewtask.typeAttrs}"/>
+
+                    <h:outputText value="Status:"/>
+                    <h:outputText value="#{addnewtask.task.status}"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:commandButton value="Create" action="#{addnewtask.createTask}" styleClass="blue_button"/>
+            <p:button value="Back" outcome="/protected/user/administration/task.xhtml" styleClass="grey_button" style="margin-left: 20px;"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
